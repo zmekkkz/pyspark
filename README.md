@@ -1,44 +1,40 @@
-# PySpark Docker Environment with Pre-loaded JDBC Drivers
+# PySpark Docker Environment
 
-This environment sets up a Spark cluster with pre-loaded JDBC drivers to avoid downloading them every time a job is submitted.
+This repository contains a Docker-based PySpark environment for data processing and analysis.
+
+## Components
+
+- **Spark Master**: Main Spark cluster coordinator
+- **Spark Workers**: Processing nodes that execute tasks
+- **JupyterLab**: Interactive Python notebook environment with PySpark integration
 
 ## Setup Instructions
 
-1. Create directory structure and download dependencies:
+1. Create required directories (if not already present):
    ```bash
-   # Create necessary directories
-   mkdir -p jobs data jars
-   
-   # Download JDBC drivers (run once)
-   bash download_jars.sh
+   mkdir -p jobs data jars notebooks
    ```
 
-2. Start the Spark cluster:
+2. Start the environment:
    ```bash
    docker-compose up -d
    ```
 
-3. Run a job:
-   ```bash
-   bash run_job.sh read_write_db_test.py
-   ```
+3. Access JupyterLab:
+   - URL: [http://localhost:8888](http://localhost:8888)
+   - No password required (configured as open access)
 
-## How It Works
+4. Access Spark Master UI:
+   - URL: [http://localhost:8080](http://localhost:8080)
 
-- JDBC driver JARs are downloaded once and stored in the `./jars` directory
-- These JARs are mounted into the Spark containers at `/opt/bitnami/spark/external_jars`
-- When submitting jobs, we include these JARs in the classpath automatically
-- This prevents Spark from downloading the packages each time a job runs
+## Working with Data Files
 
-## Folders Structure
+### File Path Issue
 
-- `jobs/`: Place your Spark job Python scripts here
-- `data/`: Data files for your Spark jobs
-- `jars/`: Pre-downloaded JDBC driver JARs
+When using PySpark in this Docker environment, you'll encounter an important difference in how files are accessed:
 
-## Troubleshooting
+- In **Jupyter notebooks**: Files are accessed at `/home/jovyan/work/data/`
+- In **Spark workers**: The same files are at `/opt/bitnami/spark/data/`
 
-If you experience issues with the JDBC connections:
-- Ensure the host.docker.internal is resolvable from within containers
-- Verify database credentials and connection parameters
-- Check that the JDBC drivers are correctly mounted in the containers
+This path difference is why you might see errors like:
+````
