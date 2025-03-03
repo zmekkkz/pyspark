@@ -44,6 +44,7 @@ services:
     image: jupyter/pyspark-notebook:spark-3.5.0
     ports:
       - "8888:8888"  # JupyterLab UI
+      - "4040:4040"  # JupyterSpark UI
     volumes:
       - ./jobs:/home/jovyan/work/jobs
       - ./data:/home/jovyan/work/data

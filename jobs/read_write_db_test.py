@@ -18,7 +18,7 @@ df = spark.read.jdbc(url=postgres_url, table="idc_btt", properties=properties)
 df.show()
 
 # Write the DataFrame to PostgreSQL
-df.write.jdbc(url=postgres_url, table="idc_btt_1", mode="overwrite", properties=properties)
+#df.write.jdbc(url=postgres_url, table="idc_btt_1", mode="overwrite", properties=properties)
 
 # Stop the Spark session
 spark.stop()
